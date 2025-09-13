@@ -9,16 +9,6 @@ using System.Reflection;
 
 namespace Prahlad.Common
 {
-    internal static class Helper
-    {
-        internal static readonly string AppName = Assembly.GetExecutingAssembly().GetName().Name;
-        public static string GetVersion()
-        {
-            var v = Assembly.GetExecutingAssembly().GetName().Version;
-            return $"v{v.Major}.{v.Minor}";
-        }
-    }
-
     public static class FileHelper
     {
         public static string ReadEmbeddedResource(string resourceName)
