@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net8.0;net461;netstandard2.0</TargetFrameworks>
+	  
+    <!-- NuGet metadata -->
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild> <!-- set to true if you want pack on every build -->
+    <PackageId>Prahlad.Common</PackageId>
+    <Version>1.0.1</Version>
+    <Authors>Prahlad Yeri</Authors>
+    <Company>Prahlad Yeri</Company>
+    <Description>Common helper utilities (MathHelper, ThemeHelper, etc.) reusable across .NET Framework and .NET Core/5+</Description>
+    <PackageTags>helpers utilities common cross-platform</PackageTags>
+    <RepositoryUrl>https://github.com/prahladyeri/Prahlad.Common</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/prahladyeri/Prahlad.Common</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    
+    <Deterministic>true</Deterministic>
+
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+  <ItemGroup>
+	  <None Include="icon.png" Pack="true" PackagePath="\"/>
+	  <None Include="README.md" Pack="true" PackagePath="\"/>  
+  </ItemGroup>
+</Project>
