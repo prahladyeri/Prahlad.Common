@@ -15,16 +15,22 @@ namespace Prahlad.Common
     public static class StringHelper
     {
         // RFC 4648 alphabet
-        internal const string Base32Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        private const string Base32Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
-        private static readonly string[] RomanMap =
+        private static readonly string[] RomanMapUpper =
         {
             "I","II","III","IV","V","VI","VII","VIII","IX","X",
             "XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX",
             "XXI","XXII","XXIII","XXIV","XXV","XXVI"
         };
 
-        internal static string LiteEncryptShift(string plainText, int shift = 32)
+        private static readonly string[] RomanMapLower =
+        {
+            "i","ii","iii","iv","v","vi","vii","viii","ix","x",
+            "xi","xii","xiii","xiv","xv","xvi","xvii","xviii","xix","xx",
+            "xxi","xxii","xxiii","xxiv","xxv","xxvi"
+        };
+        public static string LiteEncryptShift(string plainText, int shift = 32)
         {
             if (plainText == null) return null;
             StringBuilder sb = new StringBuilder();
@@ -36,7 +42,7 @@ namespace Prahlad.Common
             return sb.ToString();
         }
 
-        internal static string LiteDecryptShift(string cipherText, int shift = 32)
+        public static string LiteDecryptShift(string cipherText, int shift = 32)
         {
             if (cipherText == null) return null;
             StringBuilder sb = new StringBuilder();
@@ -48,31 +54,40 @@ namespace Prahlad.Common
             return sb.ToString();
         }
 
-        internal static string LiteEncryptRoman(string plainText)
+        public static string LiteEncryptRoman(string plainText)
         {
             if (string.IsNullOrEmpty(plainText)) return plainText;
             StringBuilder sb = new StringBuilder();
-            foreach (char c in plainText.ToUpper())
+
+            foreach (char c in plainText)
             {
                 if (c >= 'A' && c <= 'Z')
-                    sb.Append(RomanMap[c - 'A']).Append("-");
+                    sb.Append(RomanMapUpper[c - 'A']).Append("-");
+                else if (c >= 'a' && c <= 'z')
+                    sb.Append(RomanMapLower[c - 'a']).Append("-");
                 else
                     sb.Append(c);
             }
-            if (sb.Length > 0) sb.Length--; // remove last dash
+
+            if (sb.Length > 0 && sb[sb.Length - 1] == '-') sb.Length--;
             return sb.ToString();
         }
 
-        internal static string LiteDecryptRoman(string cipherText)
+        public static string LiteDecryptRoman(string cipherText)
         {
             if (string.IsNullOrEmpty(cipherText)) return cipherText;
             StringBuilder sb = new StringBuilder();
             string[] parts = cipherText.Split('-');
+
             foreach (var part in parts)
             {
-                int idx = Array.IndexOf(RomanMap, part);
-                if (idx >= 0)
-                    sb.Append((char)('A' + idx));
+                int idxUpper = Array.IndexOf(RomanMapUpper, part);
+                int idxLower = Array.IndexOf(RomanMapLower, part);
+
+                if (idxUpper >= 0)
+                    sb.Append((char)('A' + idxUpper));
+                else if (idxLower >= 0)
+                    sb.Append((char)('a' + idxLower));
                 else
                     sb.Append(part);
             }
