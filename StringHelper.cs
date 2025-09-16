@@ -54,45 +54,78 @@ namespace Prahlad.Common
             return sb.ToString();
         }
 
-        public static string LiteEncryptRoman(string plainText)
+
+        public static string LiteEncryptRoman(string plaintext, int shift = 10)
         {
-            if (string.IsNullOrEmpty(plainText)) return plainText;
-            StringBuilder sb = new StringBuilder();
-
-            foreach (char c in plainText)
+            StringBuilder ciphertext = new StringBuilder();
+            foreach (char character in plaintext)
             {
-                if (c >= 'A' && c <= 'Z')
-                    sb.Append(RomanMapUpper[c - 'A']).Append("-");
-                else if (c >= 'a' && c <= 'z')
-                    sb.Append(RomanMapLower[c - 'a']).Append("-");
+                if (char.IsLetter(character))
+                {
+                    char baseChar = char.IsUpper(character) ? 'A' : 'a';
+                    // Calculate the new position after shifting
+                    int newPosition = (character - baseChar + shift) % 26;
+                    // Handle negative results from modulo operator in C# for negative shifts
+                    if (newPosition < 0)
+                    {
+                        newPosition += 26;
+                    }
+                    ciphertext.Append((char)(baseChar + newPosition));
+                }
                 else
-                    sb.Append(c);
+                {
+                    // Non-alphabetic characters are appended without modification
+                    ciphertext.Append(character);
+                }
             }
-
-            if (sb.Length > 0 && sb[sb.Length - 1] == '-') sb.Length--;
-            return sb.ToString();
+            return ciphertext.ToString();
         }
 
-        public static string LiteDecryptRoman(string cipherText)
+        public static string LiteDecryptRoman(string ciphertext, int shift = 10)
         {
-            if (string.IsNullOrEmpty(cipherText)) return cipherText;
-            StringBuilder sb = new StringBuilder();
-            string[] parts = cipherText.Split('-');
-
-            foreach (var part in parts)
-            {
-                int idxUpper = Array.IndexOf(RomanMapUpper, part);
-                int idxLower = Array.IndexOf(RomanMapLower, part);
-
-                if (idxUpper >= 0)
-                    sb.Append((char)('A' + idxUpper));
-                else if (idxLower >= 0)
-                    sb.Append((char)('a' + idxLower));
-                else
-                    sb.Append(part);
-            }
-            return sb.ToString();
+            return LiteEncryptRoman(ciphertext, -shift);
         }
+
+
+        //public static string LiteEncryptRoman(string plainText)
+        //{
+        //    if (string.IsNullOrEmpty(plainText)) return plainText;
+        //    StringBuilder sb = new StringBuilder();
+
+        //    foreach (char c in plainText)
+        //    {
+        //        if (c >= 'A' && c <= 'Z')
+        //            sb.Append(RomanMapUpper[c - 'A']).Append("-");
+        //        else if (c >= 'a' && c <= 'z')
+        //            sb.Append(RomanMapLower[c - 'a']).Append("-");
+        //        else
+        //            sb.Append(c);
+        //    }
+
+        //    if (sb.Length > 0 && sb[sb.Length - 1] == '-') sb.Length--;
+        //    return sb.ToString();
+        //}
+
+        //public static string LiteDecryptRoman(string cipherText)
+        //{
+        //    if (string.IsNullOrEmpty(cipherText)) return cipherText;
+        //    StringBuilder sb = new StringBuilder();
+        //    string[] parts = cipherText.Split('-');
+
+        //    foreach (var part in parts)
+        //    {
+        //        int idxUpper = Array.IndexOf(RomanMapUpper, part);
+        //        int idxLower = Array.IndexOf(RomanMapLower, part);
+
+        //        if (idxUpper >= 0)
+        //            sb.Append((char)('A' + idxUpper));
+        //        else if (idxLower >= 0)
+        //            sb.Append((char)('a' + idxLower));
+        //        else
+        //            sb.Append(part);
+        //    }
+        //    return sb.ToString();
+        //}
 
         public static byte[] Base32Decode(string base32)
         {
