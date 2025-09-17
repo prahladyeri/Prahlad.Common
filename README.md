@@ -35,10 +35,10 @@ Install-Package Prahlad.Common
 ## Usage
 
 ```csharp
-using Prahlad.Common.Helpers;
+using Prahlad.Common;
 
-var result = MathHelper.SafeDivide(10, 2);
-// result = 5
+var result = StringHelper.EncryptRomanShift("PRAHLAD");
+// result = ZBKRVKN
 ```
 
 ## License
