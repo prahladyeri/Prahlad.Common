@@ -17,20 +17,8 @@ namespace Prahlad.Common
         // RFC 4648 alphabet
         private const string Base32Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
-        private static readonly string[] RomanMapUpper =
-        {
-            "I","II","III","IV","V","VI","VII","VIII","IX","X",
-            "XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX",
-            "XXI","XXII","XXIII","XXIV","XXV","XXVI"
-        };
-
-        private static readonly string[] RomanMapLower =
-        {
-            "i","ii","iii","iv","v","vi","vii","viii","ix","x",
-            "xi","xii","xiii","xiv","xv","xvi","xvii","xviii","xix","xx",
-            "xxi","xxii","xxiii","xxiv","xxv","xxvi"
-        };
-        public static string LiteEncryptShift(string plainText, int shift = 32)
+        // shift value can range from 0 to 65,535 (\u0000 to \uFFFF).
+        public static string EncryptByteShift(string plainText, int shift = 32)
         {
             if (plainText == null) return null;
             StringBuilder sb = new StringBuilder();
@@ -42,7 +30,7 @@ namespace Prahlad.Common
             return sb.ToString();
         }
 
-        public static string LiteDecryptShift(string cipherText, int shift = 32)
+        public static string DecryptByteShift(string cipherText, int shift = 32)
         {
             if (cipherText == null) return null;
             StringBuilder sb = new StringBuilder();
@@ -55,7 +43,8 @@ namespace Prahlad.Common
         }
 
 
-        public static string LiteEncryptRoman(string plaintext, int shift = 10)
+        // shift can be between 0 and 25 (0 == no encryption)
+        public static string EncryptRomanShift(string plaintext, int shift = 10)
         {
             StringBuilder ciphertext = new StringBuilder();
             foreach (char character in plaintext)
@@ -81,51 +70,11 @@ namespace Prahlad.Common
             return ciphertext.ToString();
         }
 
-        public static string LiteDecryptRoman(string ciphertext, int shift = 10)
+        public static string DecryptRomanShift(string ciphertext, int shift = 10)
         {
-            return LiteEncryptRoman(ciphertext, -shift);
+            return EncryptRomanShift(ciphertext, -shift);
         }
 
-
-        //public static string LiteEncryptRoman(string plainText)
-        //{
-        //    if (string.IsNullOrEmpty(plainText)) return plainText;
-        //    StringBuilder sb = new StringBuilder();
-
-        //    foreach (char c in plainText)
-        //    {
-        //        if (c >= 'A' && c <= 'Z')
-        //            sb.Append(RomanMapUpper[c - 'A']).Append("-");
-        //        else if (c >= 'a' && c <= 'z')
-        //            sb.Append(RomanMapLower[c - 'a']).Append("-");
-        //        else
-        //            sb.Append(c);
-        //    }
-
-        //    if (sb.Length > 0 && sb[sb.Length - 1] == '-') sb.Length--;
-        //    return sb.ToString();
-        //}
-
-        //public static string LiteDecryptRoman(string cipherText)
-        //{
-        //    if (string.IsNullOrEmpty(cipherText)) return cipherText;
-        //    StringBuilder sb = new StringBuilder();
-        //    string[] parts = cipherText.Split('-');
-
-        //    foreach (var part in parts)
-        //    {
-        //        int idxUpper = Array.IndexOf(RomanMapUpper, part);
-        //        int idxLower = Array.IndexOf(RomanMapLower, part);
-
-        //        if (idxUpper >= 0)
-        //            sb.Append((char)('A' + idxUpper));
-        //        else if (idxLower >= 0)
-        //            sb.Append((char)('a' + idxLower));
-        //        else
-        //            sb.Append(part);
-        //    }
-        //    return sb.ToString();
-        //}
 
         public static byte[] Base32Decode(string base32)
         {
@@ -188,7 +137,7 @@ namespace Prahlad.Common
         }
 
 
-        internal static string Encrypt(string plainText, string password, string salt)
+        public static string EncryptAes(string plainText, string password, string salt)
         {
             using (Aes aes = Aes.Create())
             {
@@ -208,7 +157,7 @@ namespace Prahlad.Common
             }
         }
 
-        internal static string Decrypt(string cipherText, string password, string salt)
+        public static string DecryptAes(string cipherText, string password, string salt)
         {
             using (Aes aes = Aes.Create())
             {

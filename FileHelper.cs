@@ -11,9 +11,9 @@ namespace Prahlad.Common
 {
     public static class FileHelper
     {
-        public static string ReadEmbeddedResource(string resourceName)
+        public static string ReadEmbeddedResource(string resourceName, Assembly assembly = null)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            assembly = assembly ?? Assembly.GetExecutingAssembly();
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             using (StreamReader reader = new StreamReader(stream))
             {
@@ -21,9 +21,9 @@ namespace Prahlad.Common
             }
         }
 
-        public static byte[] ReadEmbeddedResourceBytes(string resourceName)
+        public static byte[] ReadEmbeddedResourceBytes(string resourceName, Assembly assembly = null)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            assembly = assembly ?? Assembly.GetExecutingAssembly();
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if (stream == null)

@@ -13,7 +13,7 @@ namespace Prahlad.Common
     public static class Logger
     {
         public static readonly string BaseName =
-            Assembly.GetExecutingAssembly().GetName().Name;
+            Assembly.GetEntryAssembly().GetName().Name;
         private const long MaxSize = 2 * 1024 * 1024; // 2 MB
         private const int MaxBackups = 5; 
         private static readonly object _lock = new object();

@@ -10,11 +10,11 @@ namespace Prahlad.Common
 {
     public static class Helper
     {
-        public static readonly string AppName = Assembly.GetExecutingAssembly().GetName().Name;
+        public static readonly string AppName = Assembly.GetEntryAssembly().GetName().Name;
 
         public static string GetVersion()
         {
-            var v = Assembly.GetExecutingAssembly().GetName().Version;
+            var v = Assembly.GetEntryAssembly().GetName().Version;
             return $"v{v.Major}.{v.Minor}";
         }
     }
