@@ -10,7 +10,8 @@ using System.Net.Mail;
 
 namespace Prahlad.Common
 {
-    public static class MailerConfig {
+    public static class MailerConfig 
+    {
         public static MailAddress From;
         public static string SmtpPassword;
         public static string SmtpHost;
